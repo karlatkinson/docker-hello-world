@@ -1,0 +1,14 @@
+FROM microsoft/aspnetcore-build:2.0 AS build-env
+
+WORKDIR /code
+
+COPY . .
+
+RUN dotnet publish --output /build --configuration Release --framework netcoreapp2.0
+
+FROM microsoft/aspnetcore:2.0
+WORKDIR /app
+
+COPY --from=build-env /build /app
+
+ENTRYPOINT ["dotnet", "hello-world-website.dll"]
