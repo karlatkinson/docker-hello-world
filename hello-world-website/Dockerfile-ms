@@ -6,4 +6,9 @@ COPY . .
 
 RUN dotnet publish --output /build --configuration Release
 
-ENTRYPOINT ["dotnet", "/build/hello-world-website.dll"]
+FROM microsoft/aspnetcore:2.0
+WORKDIR /app
+
+COPY --from=build-env /build /app
+
+ENTRYPOINT ["dotnet", "hello-world-website.dll"]
